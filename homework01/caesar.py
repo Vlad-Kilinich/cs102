@@ -15,9 +15,25 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ''
     """
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    alfbig="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alf="abcdefghijklmnopqrstuvwxyz"
+    plaintext = list(plaintext)
+    for i in plaintext:
+        if i in alf:
+            n = alf.index(i)
+            x = n + shift
+            if x > len(alf):
+                x = x % 26
+            ciphertext = ciphertext + alf[x]
+        elif i in alfbig:
+            n = alfbig.index(i)
+            x = n + shift
+            if x > len(alfbig):
+                x = x % 26
+            ciphertext = ciphertext + alfbig[x]
+        else:
+            ciphertext = ciphertext + i
     return ciphertext
-
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
@@ -33,14 +49,27 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    alfbig="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alf="abcdefghijklmnopqrstuvwxyz"
+    ciphertext = list(ciphertext)
+    for i in ciphertext:
+        if i in alf:
+            n = alf.index(i)
+            x = n - shift
+            if x < 0:
+                x = x + 26
+            plaintext = plaintext - alf[x]
+        elif i in alfbig:
+            n = alfbig.index(i)
+            x = n - shift
+            if x < 0:
+                x = x + 26
+            plaintext = plaintext - alfbig[x]
+        else:
+            plaintext = plaintext - i
     return plaintext
 
+    
 
-def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
-    """
-    Brute force breaking a Caesar cipher.
-    """
-    best_shift = 0
-    # PUT YOUR CODE HERE
-    return best_shift
+
+
