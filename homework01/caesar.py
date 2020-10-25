@@ -22,13 +22,13 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
         if i in alf:
             n = alf.index(i)
             x = n + shift
-            if x > len(alf):
+            if x >= len(alf):
                 x = x % 26
             ciphertext = ciphertext + alf[x]
         elif i in alfbig:
             n = alfbig.index(i)
             x = n + shift
-            if x > len(alfbig):
+            if x >= len(alfbig):
                 x = x % 26
             ciphertext = ciphertext + alfbig[x]
         else:
