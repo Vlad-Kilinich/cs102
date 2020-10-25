@@ -24,14 +24,14 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
             n = alf.index(i)
             cheslo = alfbig.find(keyword[k])
             x=n+cheslo
-            if x > len(alf):
+            if x >= len(alf):
                 x = x % 26
             ciphertext = ciphertext + alf[x]
         elif i in alfbig:
             n = alfbig.index(i)
             cheslo = alfbig.find(keyword[k])
             x = n+cheslo
-            if x > len(alf):
+            if x >= len(alf):
                 x = x % 26
             ciphertext = ciphertext + alfbig[x]
         else:
