@@ -58,13 +58,13 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
             x = n - shift
             if x < 0:
                 x = x + 26
-            plaintext = plaintext - alf[x]
+            plaintext = plaintext + alf[x]
         elif i in alfbig:
             n = alfbig.index(i)
             x = n - shift
             if x < 0:
                 x = x + 26
-            plaintext = plaintext - alfbig[x]
+            plaintext = plaintext + alfbig[x]
         else:
-            plaintext = plaintext - i
+            plaintext = plaintext + i
     return plaintext 
