@@ -65,3 +65,6 @@ class Console(UI):
             time.sleep(1)
 
             if self.life.is_max_generations_exceed:
+                stop = False
+
+        curses.endwin()
