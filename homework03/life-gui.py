@@ -5,32 +5,35 @@ import math
 from life import GameOfLife
 from ui import UI
 
+
 class GUI(UI):
 
-    def __init__(self, life: GameOfLife, cell_size: int=10, speed: int=10) -> None:
-        super().__init__(life)
-        
-        
+    def __init__(self, life: GameOfLife, cell_size: int=30, speed: int=1) -> None:
+        super().__init__(GameOfLife)
+
         self.speed = speed
         self.cell_size = cell_size
+
         self.life = life
-        self.width = self.life.rows / self.cell_size
-        
-        self.heught = self.life.cols / self.cell_size
-        
-        self.screen_size = self.life.rows * cell_size, self.life.cols * cell_size
+
+        self.screen_size =  self.life.rows * cell_size, self.life.cols * cell_size
         self.screen = pygame.display.set_mode(self.screen_size)
-        
+
 
     def draw_lines(self) -> None:
-        for x in range(0, self.width, self.cell_size):
+        """ Отрисовать сетку """
+        for x in range(0, self.cell_size, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
-                    (x, 0), (x, self.height))
-        for y in range(0, self.height, self.cell_size):
+                    (x, 0), (x, self.cell_size))
+        for y in range(0, self.cell_size, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
-                    (0, y), (self.width, y))
+                    (0, y), (self.cell_size, y))
+
 
     def draw_grid(self) -> None:
+        """
+        Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
+        """
         y = 0
         grid = self.life.curr_generation
 
@@ -43,7 +46,9 @@ class GUI(UI):
                 x += self.cell_size
             y += self.cell_size
 
+
     def run(self) -> None:
+        """ Запустить игру """
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
@@ -78,9 +83,6 @@ class GUI(UI):
                     break
                 self.draw_grid()
 
-            pygame.display.flip()
-            clock.tick(self.speed)
-        pygame.quit()
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
