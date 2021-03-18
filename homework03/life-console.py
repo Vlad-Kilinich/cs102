@@ -1,70 +1,50 @@
 import curses
-import time
 
 from life import GameOfLife
 from ui import UI
-
+from time import sleep
 
 class Console(UI):
+
     def __init__(self, life: GameOfLife) -> None:
         super().__init__(life)
-        self.life = life
-        self.screen = (self.life.rows, self.life.cols)
-
 
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
-
-        screen_ = curses.initscr()
-        curses.curs_set(0)
-
-        screen_.addstr(0, 0, f'+{"-" * screen[1]}+')
-
-        for i in range(screen[0]):
-            screen_.addstr(i+1, 0, '|')
-            screen_.addstr(i+1, screen[1] + 1, '|')
-
-        screen_.addstr(screen[0] + 1, 0, f'+{"-" * screen[1]}+')
-
-        curses.endwin()
-
+        screen.border('|', '|', '-', '-', '+', '+', '+', '+')
 
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
-        screen_ = curses.initscr()
-
-        row = 0
-        for i in screen:
-            my_str = ''
-            col = 1
-            for v in i:
-                if v == 1:
-                    my_str += f'Ж'
-                else:
-                    my_str += f' '
-
-                col += 1
-            row += 1
-            screen_.addstr(row, 1, my_str)
-
-        curses.endwin()
-
+        for i in range(1, self.life.rows):
+            for j in range(1, self.life.cols):
+                if self.life.curr_generation[i][j] == 1:
+                    screen.addstr(j, i, '*')
+                elif self.life.curr_generation[i][j] == 0:
+                    screen.addstr(j, i, ' ')
 
     def run(self) -> None:
         screen = curses.initscr()
-        stop = True
-
-        while stop:
-            if not self.life.is_changing:
-                stop = False
-
-            self.draw_borders(self.screen)
-            self.draw_grid(self.life.curr_generation)
-            self.life.step()
+        while (self.life.is_max_generations_exceeded is False) and (self.life.is_changing is True):
+            screen.clear()
+            self.draw_borders(screen)
+            self.draw_grid(screen)
             screen.refresh()
-            time.sleep(1)
-
-            if self.life.is_max_generations_exceed:
-                stop = False
-
+            sleep(1)
+            self.life.step()
+        screen.refresh()
         curses.endwin()
+import sys
+import argparse
+def createParser ():
+    parser = argparse.ArgumentParser()
+    parser.add_argument ('-c','--cols', type=int, default='20')
+    parser.add_argument ('-r','--rows', type=int, default='20')
+    parser.add_argument ('-max','--max_generations', type=int, default='50')
+    return parser
+
+
+if __name__ == '__main__':
+    parser = createParser()
+    namespace = parser.parse_args(sys.argv[1:])
+
+if __name__ == '__main__':
+    gui = Console(GameOfLife((namespace.cols, namespace.rows), True, namespace.max_generations))
+    gui.run()
